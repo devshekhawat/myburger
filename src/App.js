@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route, Switch, withRouter, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, withRouter, Redirect } from 'react-router-dom';
 // import { connect } from 'react-redux';
 
 // import Layout from './hoc/Layout/Layout';
@@ -13,30 +13,30 @@ import ProtectedRoute from './components/ProtectedRoute/index';
 import Home from './components/Home';
 import Private from './components/Private';
 import Login from './components/Login';
+// import { useOktaAuth } from '@okta/okta-react';
 import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
-import { OktaAuth } from '@okta/okta-auth-js';
 import config from './config';
 
-const oktaAuth = new OktaAuth({
-  issuer: `https://${config.oktaDomain}.com/oauth2/default`,
-  clientId: config.okatClientId,
-  redirectUri: window.location.origin + '/login/callback'
-});
 
 class App extends Component {
   // componentDidMount () {
   //   this.props.onTryAutoSignup();
   // }
 
-  render () {
+  render() {
+    // const { authState } = useOktaAuth();
+
     let routes = (
       <Router>
-      <Security oktaAuth={oktaAuth}>
-        <Route path='/' exact={true} component={Home}/>
-        <SecureRoute path='/private' component={Private}/>
-        <Route path='/login/callback' component={LoginCallback} />
-      </Security>
-    </Router>
+        <Security {...config.oidc}>
+          <Route path='/' exact={true} component={Home} />
+          {/* {!authState.isPending && !authState.isAuthenticated && */}
+          <Route path='/login' component={Login} />
+
+          <SecureRoute path='/private' component={Private} />
+          <Route path='/login/callback' component={LoginCallback} />
+        </Security>
+      </Router >
     );
 
     // if ( this.props.isAuthenticated ) {
@@ -54,7 +54,7 @@ class App extends Component {
     return (
       <div>
         {/* <Layout> */}
-          {routes}
+        {routes}
         {/* </Layout> */}
       </div>
     );
