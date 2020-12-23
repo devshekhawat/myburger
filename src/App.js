@@ -1,77 +1,84 @@
+/* eslint-disable default-case */
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, withRouter, Redirect } from 'react-router-dom';
-// import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-// import Layout from './hoc/Layout/Layout';
-// import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
-// import Checkout from './containers/Checkout/Checkout';
-// import Orders from './containers/Orders/Orders';
-// import Auth from './containers/Auth/Auth';
-// import Logout from './containers/Auth/Logout/Logout';
-import * as actions from './store/actions/index';
 import ProtectedRoute from './components/ProtectedRoute/index';
 import Home from './components/Home';
 import Private from './components/Private';
 import Login from './components/Login';
-// import { useOktaAuth } from '@okta/okta-react';
 import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
 import config from './config';
 
+import { AzureAD, AuthenticationState } from 'react-aad-msal';
+import { authProvider } from './authProvider';
 
 class App extends Component {
-  // componentDidMount () {
-  //   this.props.onTryAutoSignup();
-  // }
 
   render() {
-    // const { authState } = useOktaAuth();
-
-    let routes = (
+    let azureRoutes = (
       <Router>
-        <Security {...config.oidc}>
-          <Route path='/' exact={true} component={Home} />
-          {/* {!authState.isPending && !authState.isAuthenticated && */}
-          <Route path='/login' component={Login} />
-
-          <SecureRoute path='/private' component={Private} />
-          <Route path='/login/callback' component={LoginCallback} />
-        </Security>
-      </Router >
+        <AzureAD provider={authProvider} forceLogin={false}>
+          {
+            ({ login, logout, authenticationState, error, accountInfo }) => {
+              switch (authenticationState) {
+                case AuthenticationState.Authenticated:
+                  return (
+                    <Switch>
+                      <Route path='/' exact component={Home} />
+                      <Route path='/private' component={Private} />
+                    </Switch>
+                  );
+                case AuthenticationState.Unauthenticated:
+                  return (
+                    <div>
+                      {error && <p><span>An error occurred during authentication, please try again!</span></p>}
+                      <Security {...config.oidc}>
+                        <Switch>
+                          <Route path='/' exact component={Home} />
+                          <Route path='/login' exact component={() => <Login login={login} />} />
+                          <ProtectedRoute path='/private' exact component={Private} />
+                          <Route path='/login/callback' component={LoginCallback} />
+                        </Switch>
+                      </Security>
+                    </div>
+                  );
+                case AuthenticationState.InProgress:
+                  return (<p>Authenticating...</p>);
+              }
+            }
+          }
+        </AzureAD>
+      </Router>
     );
 
-    // if ( this.props.isAuthenticated ) {
-    //   routes = (
-    //     <Switch>
-    //       <Route path="/checkout" component={Checkout} />
-    //       <Route path="/orders" component={Orders} />
-    //       <Route path="/logout" component={Logout} />
-    //       <Route path="/" exact component={BurgerBuilder} />
-    //       <Redirect to="/" />
-    //     </Switch>
-    //   );
-    // }
+    // let oktaRoutes = (
+    //   <Router>
+    //     <Security {...config.oidc}>
+    //       {/* {!authState.isPending && !authState.isAuthenticated && */}
+    //       <SecureRoute path='/private' component={Private} />
+    //       <Route path='/login/callback' component={LoginCallback} />
+    //     </Security>
+    //   </Router >
+    // );
+    // let baseRoutes = (
+    //   <Router>
+    //     <Security {...config.oidc}>
+    //       <Switch>
+    //         <Route path='/' exact component={Home} />
+    //         <Route path='/login' exact component={Login} />
+    //         <ProtectedRoute path='/private' component={Private} />
+    //         <Route path='/login/callback' component={LoginCallback} />
+    //       </Switch>
+    //     </Security>
+    //   </Router>
+    // );
 
     return (
       <div>
-        {/* <Layout> */}
-        {routes}
-        {/* </Layout> */}
+        {azureRoutes}
       </div>
     );
   }
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     isAuthenticated: state.auth.token !== null
-//   };
-// };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     onTryAutoSignup: () => dispatch( actions.authCheckState() )
-//   };
-// };
-
-// export default withRouter( connect( mapStateToProps, mapDispatchToProps )( App ) );
 export default App;

@@ -1,17 +1,19 @@
-import React from 'react';
-import {Route, useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Route, useHistory } from 'react-router-dom';
 
-// import { isLoggedIn } from '../../helper/localStol/rage';
+import { useOktaAuth } from '@okta/okta-react';
 
-const isLoggedIn = localStorage.getItem('token');
 const ProtectedRoute = (props) => {
 	let history = useHistory();
-	console.log("Here we are!!!", isLoggedIn);
-	if(isLoggedIn) {
+	const { authState } = useOktaAuth();
+
+
+	if (authState.isAuthenticated) {
 		return <Route {...props} />
 	} else {
-		history.push("/login")
+		history.push("/login");
 	}
+	return <div />;
 };
 
 export default ProtectedRoute;

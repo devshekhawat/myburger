@@ -15,3 +15,5 @@ export default {
     messagesUrl: 'http://localhost:8000/api/messages',
   },
 };
+
+export const azureId = '251b3d3b-98c2-413d-8400-a348d1e1dfe7';
