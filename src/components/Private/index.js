@@ -14,19 +14,19 @@ import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 
 const Profile = () => {
-  const { authState, authService } = useOktaAuth();
+  // const { authState, authService } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
 
-  useEffect(() => {
-    if (!authState.isAuthenticated) {
-      // When user isn't authenticated, forget any user info
-      setUserInfo(null);
-    } else {
-      authService.getUser().then((info) => {
-        setUserInfo(info);
-      });
-    }
-  }, [authState, authService]); // Update if authState changes
+  // useEffect(() => {
+  //   if (!authState.isAuthenticated) {
+  //     // When user isn't authenticated, forget any user info
+  //     setUserInfo(null);
+  //   } else {
+  //     authService.getUser().then((info) => {
+  //       setUserInfo(info);
+  //     });
+  //   }
+  // }, [authState, authService]); // Update if authState changes
 
   if (!userInfo) {
     return (

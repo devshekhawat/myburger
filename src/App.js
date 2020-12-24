@@ -11,6 +11,7 @@ import config from './config';
 
 import { AzureAD, AuthenticationState } from 'react-aad-msal';
 import { authProvider } from './authProvider';
+import Entry from './components/Entry';
 
 class App extends Component {
 
@@ -26,7 +27,7 @@ class App extends Component {
                     <Switch>
                       <Route path='/' exact component={Home} />
                       <Route path='/login' exact component={() => <Login login={login} />} />
-                      <Route path='/private' component={Private} />
+                      <Route path='/private' component={() => <Entry azure={AuthenticationState.Authenticated} />} />
                     </Switch>
                   );
                 case AuthenticationState.Unauthenticated:
@@ -38,7 +39,8 @@ class App extends Component {
                         <Switch>
                           <Route path='/' exact component={Home} />
                           <Route path='/login' exact component={() => <Login login={login} />} />
-                          <ProtectedRoute path='/private' exact component={Private} />
+                          <Route path='/private' component={Entry} />
+                          {/* <ProtectedRoute path='/private' exact component={Private} /> */}
                           <Route path='/login/callback' component={LoginCallback} />
                         </Switch>
                       </Security>
