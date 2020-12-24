@@ -24,11 +24,14 @@ class App extends Component {
               switch (authenticationState) {
                 case AuthenticationState.Authenticated:
                   return (
-                    <Switch>
-                      <Route path='/' exact component={Home} />
-                      <Route path='/login' exact component={() => <Login login={login} />} />
-                      <Route path='/private' component={() => <Entry azure={AuthenticationState.Authenticated} />} />
-                    </Switch>
+                    <Security {...config.oidc}>
+                      <Switch>
+                        <Route path='/' exact component={Home} />
+                        <Route path='/private' component={() => <Entry azure={AuthenticationState.Authenticated} accountInfo={accountInfo} />} />
+                        <Route path='/login' exact component={() => <Login login={login} />} />
+                        <Route path='/login/callback' component={LoginCallback} />
+                      </Switch>
+                    </Security>
                   );
                 case AuthenticationState.Unauthenticated:
                   return (
@@ -38,8 +41,8 @@ class App extends Component {
                       <Security {...config.oidc}>
                         <Switch>
                           <Route path='/' exact component={Home} />
-                          <Route path='/login' exact component={() => <Login login={login} />} />
                           <Route path='/private' component={Entry} />
+                          <Route path='/login' exact component={() => <Login login={login} />} />
                           {/* <ProtectedRoute path='/private' exact component={Private} /> */}
                           <Route path='/login/callback' component={LoginCallback} />
                         </Switch>

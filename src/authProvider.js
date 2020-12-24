@@ -5,7 +5,7 @@ const config = {
   auth: {
     authority: 'https://login.microsoftonline.com/12077ea8-3f59-4127-a02a-2b2dc0e36027',
     clientId: azureId,
-    redirectUri: window.location.origin + "/private"
+    redirectUri: "http://localhost:3000/private"
   },
   cache: {
     cacheLocation: "localStorage",
@@ -24,7 +24,7 @@ const authenticationParameters = {
 // Options
 const options = {
   loginType: LoginType.Redirect,
-  tokenRefreshUri: window.location.origin + '/private'
+  tokenRefreshUri: "http://localhost:3000/private"
 }
 
 export const authProvider = new MsalAuthProvider(config, authenticationParameters, options)

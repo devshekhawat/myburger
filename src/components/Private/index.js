@@ -13,26 +13,49 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 
-const Profile = () => {
-  // const { authState, authService } = useOktaAuth();
+const Profile = ({ accountInfo }) => {
+  const { authState, authService } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
 
-  // useEffect(() => {
-  //   if (!authState.isAuthenticated) {
-  //     // When user isn't authenticated, forget any user info
-  //     setUserInfo(null);
-  //   } else {
-  //     authService.getUser().then((info) => {
-  //       setUserInfo(info);
-  //     });
-  //   }
-  // }, [authState, authService]); // Update if authState changes
-
-  if (!userInfo) {
+  useEffect(() => {
+    if (!authState.isAuthenticated) {
+      // When user isn't authenticated, forget any user info
+      setUserInfo(null);
+    } else {
+      authService.getUser().then((info) => {
+        setUserInfo(info);
+      });
+    }
+  }, [authState, authService]); // Update if authState changes
+  if (accountInfo) {
+    return (
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>Claim</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr >
+              <td>Name</td>
+              <td>{accountInfo && accountInfo.account.name}</td>
+            </tr>
+            <tr >
+              <td>User Name</td>
+              <td>{accountInfo && accountInfo.account.userName}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+  else if (!userInfo) {
     return (
       <div>
         <p>Fetching user profile...</p>
-        <br/>
+        <br />
         <button>Logout</button>
       </div>
     );
