@@ -32,6 +32,8 @@ const Profile = () => {
     return (
       <div>
         <p>Fetching user profile...</p>
+        <br/>
+        <button>Logout</button>
       </div>
     );
   }

@@ -1,10 +1,10 @@
 import React from 'react';
-import ProtectedRoute from '../ProtectedRoute';
+import Private from '../Private';
 
 const Entry = (props) => {
 
   if (props.azure) {
-    return <ProtectedRoute loginProvider={1}/>
+    return <Private loginProvider={1}/>
   }
 
   // if (okta) {
