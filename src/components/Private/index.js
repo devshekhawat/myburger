@@ -12,9 +12,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
+import Spinner from '../UI/Spinner/Spinner';
 
 const Profile = ({ accountInfo, azureLogout }) => {
-  const { authState, authService, oktaAuth } = useOktaAuth();
+  const { authState, authService } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
@@ -45,11 +46,11 @@ const Profile = ({ accountInfo, azureLogout }) => {
           </thead>
           <tbody>
             <tr >
-              <td>Name</td>
+              <td>Name: </td>
               <td>{accountInfo && accountInfo.account.name}</td>
             </tr>
             <tr >
-              <td>User Name</td>
+              <td>User Name: </td>
               <td>{accountInfo && accountInfo.account.userName}</td>
             </tr>
           </tbody>
@@ -62,7 +63,7 @@ const Profile = ({ accountInfo, azureLogout }) => {
     return (
       <div>
         <p>Fetching user profile...</p>
-        <br />
+        <Spinner/>
         <button onClick={oktaLogout}>Logout</button>
       </div>
     );

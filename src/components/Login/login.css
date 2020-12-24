@@ -1,0 +1,25 @@
+.loginProvider span {
+  cursor: pointer;
+}
+
+.okta {
+  width: 13%;
+  border-radius: 5px;
+}
+
+.okta:hover {
+  box-shadow: 0px 4px 14px 0px #5ab5ef;
+  transition: all 0.5s;
+}
+
+.azure {
+  border-radius: 5px;
+  width: 12%;
+  margin-left: 1rem;
+  border: 1px solid #1fbef3;
+}
+
+.azure:hover {
+  transition: all 0.6s;
+  box-shadow: 0px 4px 13px 0px #1fbef2;
+}

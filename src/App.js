@@ -2,11 +2,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import ProtectedRoute from './components/ProtectedRoute/index';
 import Home from './components/Home';
-import Private from './components/Private';
 import Login from './components/Login';
-import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
+import { Security, LoginCallback } from '@okta/okta-react';
 import config from './config';
 
 import { AzureAD, AuthenticationState } from 'react-aad-msal';

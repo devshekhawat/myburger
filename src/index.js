@@ -27,10 +27,12 @@ const store = createStore(rootReducer, composeEnhancers(
 const app = (
     <Provider store={store}>
         <BrowserRouter>
-            <App />
+            <center>
+                <App />
+            </center>
         </BrowserRouter>
     </Provider>
 );
 
-ReactDOM.render( app, document.getElementById( 'root' ) );
+ReactDOM.render(app, document.getElementById('root'));
 registerServiceWorker();
