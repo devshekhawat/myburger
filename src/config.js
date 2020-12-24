@@ -17,3 +17,4 @@ export default {
 };
 
 export const azureId = '251b3d3b-98c2-413d-8400-a348d1e1dfe7';
+export const azureAuthority = 'https://login.microsoftonline.com/12077ea8-3f59-4127-a02a-2b2dc0e36027';

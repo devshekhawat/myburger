@@ -1,4 +1,3 @@
-/* eslint-disable default-case */
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -14,7 +13,7 @@ import Entry from './components/Entry';
 class App extends Component {
 
   render() {
-    let azureRoutes = (
+    let routes = (
       <Router>
         <AzureAD provider={authProvider} forceLogin={false}>
           {
@@ -41,7 +40,6 @@ class App extends Component {
                           <Route path='/' exact component={Home} />
                           <Route path='/private' component={Entry} />
                           <Route path='/login' exact component={() => <Login login={login} />} />
-                          {/* <ProtectedRoute path='/private' exact component={Private} /> */}
                           <Route path='/login/callback' component={LoginCallback} />
                         </Switch>
                       </Security>
@@ -49,6 +47,8 @@ class App extends Component {
                   );
                 case AuthenticationState.InProgress:
                   return (<p>Authenticating...</p>);
+                default:
+                  return (<p>Something went wrong. Please check your internet!</p>);
               }
             }
           }
@@ -56,31 +56,9 @@ class App extends Component {
       </Router>
     );
 
-    // let oktaRoutes = (
-    //   <Router>
-    //     <Security {...config.oidc}>
-    //       {/* {!authState.isPending && !authState.isAuthenticated && */}
-    //       <SecureRoute path='/private' component={Private} />
-    //       <Route path='/login/callback' component={LoginCallback} />
-    //     </Security>
-    //   </Router >
-    // );
-    // let baseRoutes = (
-    //   <Router>
-    //     <Security {...config.oidc}>
-    //       <Switch>
-    //         <Route path='/' exact component={Home} />
-    //         <Route path='/login' exact component={Login} />
-    //         <ProtectedRoute path='/private' component={Private} />
-    //         <Route path='/login/callback' component={LoginCallback} />
-    //       </Switch>
-    //     </Security>
-    //   </Router>
-    // );
-
     return (
       <div>
-        {azureRoutes}
+        {routes}
       </div>
     );
   }

@@ -1,9 +1,9 @@
 import { MsalAuthProvider, LoginType } from 'react-aad-msal';
-import { azureId } from './config';
+import { azureId, azureAuthority } from './config';
 // Msal Configurations
 const config = {
   auth: {
-    authority: 'https://login.microsoftonline.com/12077ea8-3f59-4127-a02a-2b2dc0e36027',
+    authority: azureAuthority,
     clientId: azureId,
     redirectUri: "http://localhost:3000/private",
     navigateToLoginRequestUrl: false
