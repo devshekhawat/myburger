@@ -25,12 +25,14 @@ class App extends Component {
                   return (
                     <Switch>
                       <Route path='/' exact component={Home} />
+                      <Route path='/login' exact component={() => <Login login={login} />} />
                       <Route path='/private' component={Private} />
                     </Switch>
                   );
                 case AuthenticationState.Unauthenticated:
                   return (
                     <div>
+                      {error && console.log(error)}
                       {error && <p><span>An error occurred during authentication, please try again!</span></p>}
                       <Security {...config.oidc}>
                         <Switch>
