@@ -27,7 +27,7 @@ class App extends Component {
                     <Security {...config.oidc}>
                       <Switch>
                         <Route path='/' exact component={Home} />
-                        <Route path='/private' component={() => <Entry azure={AuthenticationState.Authenticated} accountInfo={accountInfo} />} />
+                        <Route path='/private' component={() => <Entry azure={AuthenticationState.Authenticated} accountInfo={accountInfo} logout={logout} />} />
                         <Route path='/login' exact component={() => <Login login={login} />} />
                         <Route path='/login/callback' component={LoginCallback} />
                       </Switch>

@@ -6,7 +6,7 @@ const Entry = (props) => {
   const { authState } = useOktaAuth();
 
   if (props.azure) {
-    return <Private loginProvider={1} accountInfo={props.accountInfo} />
+    return <Private loginProvider={1} accountInfo={props.accountInfo} azureLogout={props.logout} />
   } else if (authState.isAuthenticated) {
     return <Private loginProvider={1} />
   }

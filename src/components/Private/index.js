@@ -13,8 +13,8 @@
 import React, { useState, useEffect } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
 
-const Profile = ({ accountInfo }) => {
-  const { authState, authService } = useOktaAuth();
+const Profile = ({ accountInfo, azureLogout }) => {
+  const { authState, authService, oktaAuth } = useOktaAuth();
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
@@ -27,9 +27,15 @@ const Profile = ({ accountInfo }) => {
       });
     }
   }, [authState, authService]); // Update if authState changes
+
+  const oktaLogout = async () => {
+    authService.logout('/');
+  };
+
   if (accountInfo) {
     return (
       <div>
+        <h1>You have logged in with Microsoft Azure</h1>
         <table>
           <thead>
             <tr>
@@ -48,6 +54,7 @@ const Profile = ({ accountInfo }) => {
             </tr>
           </tbody>
         </table>
+        <button onClick={azureLogout}>Logout</button>
       </div>
     );
   }
@@ -56,7 +63,7 @@ const Profile = ({ accountInfo }) => {
       <div>
         <p>Fetching user profile...</p>
         <br />
-        <button>Logout</button>
+        <button onClick={oktaLogout}>Logout</button>
       </div>
     );
   }
@@ -64,11 +71,7 @@ const Profile = ({ accountInfo }) => {
   return (
     <div>
       <div>
-        <h1 as="h1">
-          {' '}
-          My User Profile (ID Token Claims)
-          {' '}
-        </h1>
+        <h1>You have logged in with Okta</h1>
         <p>
           Below is the information from your ID token which was obtained during the &nbsp;
           <a href="https://developer.okta.com/docs/guides/implement-auth-code-pkce">PKCE Flow</a>
@@ -102,6 +105,7 @@ const Profile = ({ accountInfo }) => {
             })}
           </tbody>
         </table>
+        <button onClick={oktaLogout}>Logout</button>
       </div>
     </div>
   );
